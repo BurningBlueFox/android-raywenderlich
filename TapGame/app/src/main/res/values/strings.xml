@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TapGame</string>
+    <string name="score">Score</string>
+    <string name="tap_me">Tap Me</string>
+    <string name="time">Time</string>
+    <string name="gameOver">Time is up, your score was: </string>
+    <string name="about">About</string>
+    <string name="aboutMe">This app was developed by Thiago Gorgulho</string>
 </resources>
