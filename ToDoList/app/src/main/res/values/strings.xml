@@ -11,4 +11,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="positiveCreateButton">Create</string>
     <string name="createListTitle">What is the name of your list?</string>
+    <string name="text_to_add">What is the task you want to add?</string>
+    <string name="add_button">Add</string>
 </resources>

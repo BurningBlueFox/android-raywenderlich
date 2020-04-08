@@ -1,8 +1,8 @@
 package com.thiagogamedev.todolist
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -12,11 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
-    lateinit var todoListRecyclerView: RecyclerView
-    val listDataManager = ListDataManager(this)
+class MainActivity : AppCompatActivity(), TodoListAdapter.ListClickListener {
+    companion object {
+        const val INTENT_LIST_KEY = "listIntent"
+        const val LIST_DETAIL_REQUEST_CODE = 100
+    }
+
+    private lateinit var todoListRecyclerView: RecyclerView
+    private val listDataManager = ListDataManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         todoListRecyclerView = findViewById(R.id.lists_reciclerview)
         todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = TodoListAdapter(lists)
+        todoListRecyclerView.adapter = TodoListAdapter(lists, this)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
 
-            val adapter = todoListRecyclerView.adapter as TodoListAdapter
             showCreateTodoListDialog()
-//            adapter.addNewItem()
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
         }
     }
 
@@ -43,6 +43,22 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == LIST_DETAIL_REQUEST_CODE){
+            data?.let {
+                val list = data.getParcelableExtra<TaskList>(INTENT_LIST_KEY)!!
+                listDataManager.saveList(list)
+                updateLists()
+            }
+        }
+    }
+
+    private fun updateLists() {
+        val lists = listDataManager.readList()
+        todoListRecyclerView.adapter = TodoListAdapter(lists, this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,6 +88,8 @@ class MainActivity : AppCompatActivity() {
                     val list = TaskList(input)
                     listDataManager.saveList(list)
                     this.addList(list)
+
+                    showTaskListItem(list)
                 }
                 dialog.dismiss()
             }
@@ -79,5 +97,15 @@ class MainActivity : AppCompatActivity() {
             show()
         }
 
+    }
+
+    private fun showTaskListItem(list: TaskList) {
+        val taskListIntent = Intent(this, DetailActivity::class.java)
+        taskListIntent.putExtra(INTENT_LIST_KEY, list)
+        startActivityForResult(taskListIntent, LIST_DETAIL_REQUEST_CODE)
+    }
+
+    override fun listItemClicked(taskList: TaskList) {
+        showTaskListItem(taskList)
     }
 }
