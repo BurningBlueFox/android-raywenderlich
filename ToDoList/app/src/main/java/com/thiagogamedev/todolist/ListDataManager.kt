@@ -1,6 +1,7 @@
 package com.thiagogamedev.todolist
 
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 
 class ListDataManager(private val context: Context) {
@@ -8,6 +9,7 @@ class ListDataManager(private val context: Context) {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context).edit()
         sharedPref.putStringSet(taskList.name, taskList.tasks.toHashSet())
         sharedPref.apply()
+        Log.d("TAG_DATA_MANAGER","Saving parameters: ${taskList.name} containing ${taskList.tasks.size} items")
     }
 
     fun readList(): ArrayList<TaskList> {

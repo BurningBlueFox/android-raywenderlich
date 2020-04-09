@@ -3,7 +3,7 @@ package com.thiagogamedev.todolist
 import android.os.Parcel
 import android.os.Parcelable
 
-data class TaskList(val name: String, val tasks: ArrayList<String> = ArrayList()) : Parcelable {
+class TaskList(val name: String, val tasks: ArrayList<String> = ArrayList()) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.createStringArrayList()!!
