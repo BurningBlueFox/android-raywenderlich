@@ -1,8 +1,9 @@
-package com.thiagogamedev.todolist
+package com.thiagogamedev.todolist.holder
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.thiagogamedev.todolist.R
 
 class TodoListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

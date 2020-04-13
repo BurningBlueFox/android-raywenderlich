@@ -1,8 +1,9 @@
-package com.thiagogamedev.todolist
+package com.thiagogamedev.todolist.manager
 
 import android.content.Context
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.thiagogamedev.todolist.model.TaskList
 
 class ListDataManager(private val context: Context) {
     fun saveList(taskList: TaskList) {
@@ -19,7 +20,8 @@ class ListDataManager(private val context: Context) {
 
         for (item in content) {
             val taskItem = ArrayList(item.value as HashSet<String>)
-            val list = TaskList(item.key, taskItem)
+            val list =
+                TaskList(item.key, taskItem)
             lists.add(list)
         }
         return lists

@@ -1,4 +1,4 @@
-package com.thiagogamedev.todolist
+package com.thiagogamedev.todolist.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,33 +10,35 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.thiagogamedev.todolist.manager.ListDataManager
+import com.thiagogamedev.todolist.R
+import com.thiagogamedev.todolist.model.TaskList
+import com.thiagogamedev.todolist.adapter.TodoListAdapter
+import com.thiagogamedev.todolist.fragment.TodoListFragment
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), TodoListAdapter.ListClickListener {
+class MainActivity : AppCompatActivity(),
+    TodoListFragment.OnFragmentInteractionListener {
+
+    private var todoListFragment = TodoListFragment.newInstance()
+
     companion object {
         const val INTENT_LIST_KEY = "listIntent"
         const val LIST_DETAIL_REQUEST_CODE = 100
     }
-
-    private lateinit var todoListRecyclerView: RecyclerView
-    private val listDataManager = ListDataManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val lists = listDataManager.readList()
-
-        todoListRecyclerView = findViewById(R.id.lists_reciclerview)
-        todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = TodoListAdapter(lists, this)
 
         fab.setOnClickListener {
 
             showCreateTodoListDialog()
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,19 +49,16 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.ListClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == LIST_DETAIL_REQUEST_CODE){
+        if (requestCode == LIST_DETAIL_REQUEST_CODE) {
             data?.let {
-                val list = data.getParcelableExtra<TaskList>(INTENT_LIST_KEY)!!
-                listDataManager.saveList(list)
-                updateLists()
+                val list = data.getParcelableExtra<TaskList>(
+                    INTENT_LIST_KEY
+                )!!
+                todoListFragment.saveList(list)
             }
         }
     }
 
-    private fun updateLists() {
-        val lists = listDataManager.readList()
-        todoListRecyclerView.adapter = TodoListAdapter(lists, this)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
@@ -83,14 +82,13 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.ListClickListener {
             setTitle(dialogTitle)
             setView(todoTitleEditText)
             setPositiveButton(positiveButtonTitle) { dialog, _ ->
-                with(todoListRecyclerView.adapter as TodoListAdapter) {
-                    val input = todoTitleEditText.text.toString()
-                    val list = TaskList(input)
-                    listDataManager.saveList(list)
-                    this.addList(list)
 
-                    showTaskListItem(list)
-                }
+                val input = todoTitleEditText.text.toString()
+                val list = TaskList(input)
+                todoListFragment.addList(list)
+
+                showTaskListItem(list)
+
                 dialog.dismiss()
             }
             create()
@@ -102,10 +100,13 @@ class MainActivity : AppCompatActivity(), TodoListAdapter.ListClickListener {
     private fun showTaskListItem(list: TaskList) {
         val taskListIntent = Intent(this, DetailActivity::class.java)
         taskListIntent.putExtra(INTENT_LIST_KEY, list)
-        startActivityForResult(taskListIntent, LIST_DETAIL_REQUEST_CODE)
+        startActivityForResult(
+            taskListIntent,
+            LIST_DETAIL_REQUEST_CODE
+        )
     }
 
-    override fun listItemClicked(taskList: TaskList) {
+    override fun onTodoListClicked(taskList: TaskList) {
         showTaskListItem(taskList)
     }
 }

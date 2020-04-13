@@ -1,4 +1,4 @@
-package com.thiagogamedev.todolist
+package com.thiagogamedev.todolist.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -10,7 +10,8 @@ class TaskList(val name: String, val tasks: ArrayList<String> = ArrayList()) : P
     )
 
     companion object CREATOR: Parcelable.Creator<TaskList>{
-        override fun createFromParcel(source: Parcel): TaskList = TaskList(source)
+        override fun createFromParcel(source: Parcel): TaskList =
+            TaskList(source)
 
         override fun newArray(size: Int): Array<TaskList?> = arrayOfNulls(size)
 

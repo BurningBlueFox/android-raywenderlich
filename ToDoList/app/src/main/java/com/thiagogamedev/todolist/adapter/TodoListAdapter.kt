@@ -1,8 +1,11 @@
-package com.thiagogamedev.todolist
+package com.thiagogamedev.todolist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.thiagogamedev.todolist.R
+import com.thiagogamedev.todolist.model.TaskList
+import com.thiagogamedev.todolist.holder.TodoListViewHolder
 
 
 class TodoListAdapter(private val lists: ArrayList<TaskList>, val clickListener: ListClickListener) : RecyclerView.Adapter<TodoListViewHolder>() {
