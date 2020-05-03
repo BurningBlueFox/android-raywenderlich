@@ -7,4 +7,6 @@
         Cras tincidunt ligula non quam imperdiet efficitur. Maecenas et dictum massa, ut faucibus nisi. Nam tempor lorem varius semper pretium. Phasellus sit amet turpis auctor, pulvinar lectus eget, volutpat tellus. Etiam at tellus rutrum, tincidunt purus at, gravida ante. Mauris urna velit, rutrum nec aliquam nec, tincidunt in dolor. Aliquam consectetur dictum vulputate. Cras aliquet metus ut elementum ullamcorper.
         Mauris tincidunt eget ex quis venenatis. Fusce in bibendum sem. Aliquam euismod mi nibh. Sed laoreet nisl auctor ex elementum commodo. Nam nec lorem nibh. Nam porttitor tellus ex, sit amet euismod quam dapibus vitae. Etiam ac sem nunc. Ut odio felis, rutrum pulvinar feugiat ut, lobortis venenatis massa. Suspendisse potenti. In non nulla in tortor tempor aliquam. Proin tellus lorem, mattis quis molestie nec, tempus vel dui. Nulla non tellus eleifend, tempus diam sit amet, vulputate nulla. Mauris a semper tellus. Cras ipsum magna, sodales eu nunc ut, ultrices cursus libero. Donec mauris sapien, maximus eu convallis ut, porta id justo.
     </string>
+    <string name="done">Done</string>
+    <string name="nickname">Nickname</string>
 </resources>
